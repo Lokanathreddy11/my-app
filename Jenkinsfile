@@ -10,13 +10,16 @@ node {
    
    }
    
-   stage('Sonar Publish'){
-	   withCredentials([string(credentialsId: 'sonarqube', variable: 'sonarToken')]) {
-        def sonarToken = "sonar.login=${sonarToken}"
-        sh "${mvn} sonar:sonar -D${sonarUrl}  -D${sonarToken}"
-	 }
-      
-   }
+    stage('sonar') {
+            steps {
+                echo 'scanning project'
+                sh 'ls -ltr'
+                
+                sh ''' mvn sonar:sonar \\
+                      -Dsonar.host.url=http://13.234.75.58:9000 \\
+                      -Dsonar.login=squ_6bd36aa6b6af5238f408eb64cdeda172332dae12'''
+            }
+    	}
    
 	
    stage('Mvn Package'){
